@@ -1,7 +1,8 @@
+import 'dotenv/config'
+import dotenv from 'dotenv';
 import config from '@/config/config';
 import express, { Express } from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
 import usersRouter from '@/routes/user';
