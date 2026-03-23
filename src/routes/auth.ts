@@ -1,11 +1,11 @@
 import { Router } from 'express';
-import { validateAdminBody } from '@/validations/users';
 import {
 	activateUser,
 	logInUser,
 	logOutUser,
 	registerAdmin,
 } from '@/controllers/auth.controller';
+import { validateAdminBody } from '@/middleware/users';
 
 const router = Router();
 

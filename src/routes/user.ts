@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { getUserSchools } from '@/controllers/school.controller';
-import { validateUserPasswords } from '@/validations/users';
 import { setUserPassword } from '@/controllers/auth.controller';
+import { validateUserPasswords } from '@/middleware/users';
 
 const router = Router();
 

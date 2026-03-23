@@ -17,6 +17,6 @@ export default (req: Request, res: Response, next: NextFunction) => {
 		res.locals.userId = payload.id;
 		next();
 	} catch (e) {
-		next();
+		return next(new NotAuthorizedError('Недействительный токен'));
 	}
 };
