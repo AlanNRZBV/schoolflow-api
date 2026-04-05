@@ -15,7 +15,7 @@ export const checkUserAndGenerateToken = async (
 	password: string,
 ) => {
 	const user = await User.findByCredentials(email, password);
-	return user.generateAuthToken();
+	return {userId: user._id, role:user.role, token: user.generateAuthToken()}
 };
 
 export const checkUserAndGenerateTempToken = async (
@@ -123,5 +123,17 @@ export const createUserAndAssign = async (
 		throw e;
 	} finally {
 		await session.endSession();
+	}
+};
+
+export const getUserById = async (userId: string) => {
+	try {
+		const user = await User.findById(userId);
+		if (!user) {
+			throw new NotFoundError('Пользователь не найден');
+		}
+		return user;
+	} catch (e) {
+		throw e;
 	}
 };

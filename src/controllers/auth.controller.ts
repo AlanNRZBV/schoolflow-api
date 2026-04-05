@@ -5,6 +5,7 @@ import { TIME_INTERVALS } from '@/lib/constants/time-intervals';
 import {
 	checkUserAndGenerateTempToken,
 	checkUserAndGenerateToken,
+	getUserById,
 	setPasswordAndActivate,
 } from '@/services/user.service';
 
@@ -38,7 +39,10 @@ export const logInUser = async (
 ) => {
 	try {
 		const { email, password } = req.body;
-		const token = await checkUserAndGenerateToken(email, password);
+		const { userId, role, token } = await checkUserAndGenerateToken(
+			email,
+			password,
+		);
 		res
 			.status(200)
 			.cookie('accessToken', token, {
@@ -46,7 +50,7 @@ export const logInUser = async (
 				secure: isProd,
 				maxAge: TIME_INTERVALS.DAY,
 			})
-			.json({ message: 'Добро пожаловать' });
+			.json({ user: { id: userId, role: role }, message: 'Добро пожаловать' });
 	} catch (e) {
 		next(e);
 	}
@@ -107,6 +111,22 @@ export const setUserPassword = async (
 		res.status(200).json({
 			message: 'Используйте новые данные для входа',
 			user,
+		});
+	} catch (e) {
+		next(e);
+	}
+};
+
+export const getMe = async (
+	req: Request,
+	res: Response,
+	next: NextFunction,
+) => {
+	try {
+		const user = await getUserById(res.locals.userId);
+		res.status(200).json({
+			id: user._id,
+			role: user.role,
 		});
 	} catch (e) {
 		next(e);

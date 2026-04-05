@@ -113,7 +113,7 @@ userSchema.statics.findByCredentials = async function (
 	return user;
 };
 userSchema.methods.generateAuthToken = function () {
-	return jwt.sign({ id: this._id }, process.env.JWT_SECRET as string, {
+	return jwt.sign({ id: this._id, role:this.role }, process.env.JWT_SECRET as string, {
 		expiresIn: '1d',
 	});
 };
