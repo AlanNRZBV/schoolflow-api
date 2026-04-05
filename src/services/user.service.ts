@@ -8,6 +8,7 @@ import BadRequestError from '@/errors/bad-request-error';
 import { createAssignment } from '@/services/assigment.service';
 import { linkAssignmentToSchool } from '@/services/school.service';
 import { sendWelcomeEmailToNewUser } from '@/services/send.service';
+import NotAuthorizedError from '@/errors/not-authorized-error';
 
 export const checkUserAndGenerateToken = async (
 	email: string,
@@ -23,7 +24,7 @@ export const checkUserAndGenerateTempToken = async (
 ) => {
 	const user = await User.findByCredentials(email, password);
 	if (!user) {
-		throw new NotFoundError('Неверные данные');
+		throw new NotAuthorizedError('Неверные данные');
 	}
 	if (user.activationExp && user.activationExp < new Date()) {
 		user.status = 'suspended';

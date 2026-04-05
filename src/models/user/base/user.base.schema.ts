@@ -9,6 +9,7 @@ import * as process from 'node:process';
 import jwt from 'jsonwebtoken';
 import { NotFoundError } from '@/errors/not-found-error';
 import { SALT_ROUNDS } from '@/lib/constants/salt-rounds';
+import NotAuthorizedError from '@/errors/not-authorized-error';
 
 export const userSchema = new Schema<UserType, UserModel, UserMethods>(
 	{
@@ -107,7 +108,7 @@ userSchema.statics.findByCredentials = async function (
 		.orFail(() => new NotFoundError('Пользователь не найден'));
 	const isPasswordValid = await bcrypt.compare(password, user.password);
 	if (!isPasswordValid) {
-		throw new NotFoundError('Пользователь не найден');
+		throw new NotAuthorizedError('Нет доступа');
 	}
 	return user;
 };
